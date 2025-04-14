@@ -201,7 +201,9 @@ def create_3d_html(data, title="3D Surface Plot"):
 # Replace the execute_python function in backend/app.py with this simpler version
 
 def execute_python(code, output_path):
-    """Execute Python code and handle both static and interactive visualizations."""
+    # Indent each line of the user's code to fit inside the try block
+    indented_code = '\n'.join('    ' + line for line in code.splitlines())
+    
     # Create a temporary Python file
     with tempfile.NamedTemporaryFile(suffix='.py', mode='w', delete=False) as f:
         # Add imports and setup code with simplified error handling
@@ -220,7 +222,7 @@ import sys
 
 try:
     # User code starts here
-{code}
+{indented_code}
     
     # Check for plotly figures first (prioritize interactive over static)
     if 'fig' in locals() or 'fig' in globals():
