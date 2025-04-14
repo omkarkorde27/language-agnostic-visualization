@@ -2,15 +2,20 @@ import React from 'react';
 import './CodeEditor.css';
 
 const CodeEditor = ({ code, setCode, language }) => {
+  const handleCodeChange = (e) => {
+    setCode(e.target.value);
+  };
+
   return (
-    <div className="code-editor-container">
-      <h3>Enter your {language === 'python' ? 'Python' : 'R'} code:</h3>
+    <div className="code-editor">
+      <h3>Code Editor ({language})</h3>
       <textarea
-        className="code-editor"
+        className="code-textarea"
         value={code}
-        onChange={(e) => setCode(e.target.value)}
-        spellCheck="false"
+        onChange={handleCodeChange}
         placeholder={`Enter your ${language} code here...`}
+        rows={12}
+        spellCheck="false"
       />
     </div>
   );

@@ -17,10 +17,20 @@ function App() {
   useEffect(() => {
     if (language === 'python') {
       setExamples(pythonExamples);
+      // Set default code to first example if no example is selected
+      if (!selectedExample && pythonExamples.length > 0) {
+        setCode(pythonExamples[0].code);
+        setSelectedExample(pythonExamples[0].name);
+      }
     } else {
       setExamples(rExamples);
+      // Set default code to first example if no example is selected
+      if (!selectedExample && rExamples.length > 0) {
+        setCode(rExamples[0].code);
+        setSelectedExample(rExamples[0].name);
+      }
     }
-  }, [language]);
+  }, [language, selectedExample]);
 
   // Update code when example changes
   useEffect(() => {
@@ -39,14 +49,7 @@ function App() {
     setSelectedExample('');
     setResult(null);
     
-    // Set examples based on language
-    if (newLanguage === 'python') {
-      setExamples(pythonExamples);
-      setCode(pythonExamples[0].code);
-    } else {
-      setExamples(rExamples);
-      setCode(rExamples[0].code);
-    }
+    // Examples will be updated in the useEffect above
   };
 
   // Handle example change
@@ -61,7 +64,7 @@ function App() {
     setResult(null);
     
     try {
-      const response = await fetch('http://localhost:5001/api/visualize', {
+      const response = await fetch('/api/visualize', {  // Use relative URL for proxy to work
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

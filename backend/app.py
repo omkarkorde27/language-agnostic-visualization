@@ -196,10 +196,15 @@ def create_3d_html(data, title="3D Surface Plot"):
     """
     return html
 
+# Modify the Python execution function in backend/app.py
+
+# Replace the execute_python function in backend/app.py with this simpler version
+
 def execute_python(code, output_path):
+    """Execute Python code and handle both static and interactive visualizations."""
     # Create a temporary Python file
     with tempfile.NamedTemporaryFile(suffix='.py', mode='w', delete=False) as f:
-        # Add imports for common visualization libraries
+        # Add imports and setup code with simplified error handling
         full_code = f"""
 import matplotlib
 matplotlib.use('Agg')  # Use non-interactive backend
@@ -208,37 +213,36 @@ import numpy as np
 import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
-from plotly.offline import plot
 import plotly.io as pio
-import io
 import base64
-from io import BytesIO
+import traceback
+import sys
 
-# Function to convert plotly figure to base64
-def fig_to_base64(fig):
-    img_bytes = pio.to_image(fig, format="png")
-    encoded = base64.b64encode(img_bytes).decode('utf-8')
-    return encoded
-
-# User code starts here
+try:
+    # User code starts here
 {code}
-
-# Check if there's a plt figure to save
-try:
-    plt.savefig('{output_path}')
-    plt.close()
-except:
-    pass
-
-# Check if there's a plotly figure in a variable named 'fig'
-try:
+    
+    # Check for plotly figures first (prioritize interactive over static)
     if 'fig' in locals() or 'fig' in globals():
-        if str(type(fig)).find('plotly') >= 0:
-            img_bytes = pio.to_image(fig, format="png")
-            with open('{output_path}', 'wb') as f:
-                f.write(img_bytes)
-except:
-    pass
+        fig_var = locals().get('fig') or globals().get('fig')
+        if str(type(fig_var)).find('plotly') >= 0:
+            # Save as HTML for interactive display
+            html_content = fig_var.to_html(full_html=True, include_plotlyjs='cdn')
+            with open('{output_path}.html', 'w') as f:
+                f.write(html_content)
+            print("SUCCESS: HTML generated for interactive visualization")
+    
+    # Save matplotlib figure if present
+    try:
+        plt.savefig('{output_path}')
+        plt.close()
+        print("SUCCESS: Matplotlib figure saved")
+    except Exception as e:
+        print(f"Error saving matplotlib figure: {{str(e)}}")
+            
+except Exception as e:
+    print(f"ERROR: {{str(e)}}")
+    traceback.print_exc()
 """
         f.write(full_code)
         temp_file = f.name
@@ -250,10 +254,29 @@ except:
                                 text=True, 
                                 timeout=30)
         
+        # Log the result for debugging
+        print(f"Python execution stdout: {result.stdout}")
+        print(f"Python execution stderr: {result.stderr}")
+        
+        # Check for errors first
         if result.returncode != 0:
             return {'error': result.stderr}
         
-        # Check if output file exists
+        # Check if we have an interactive plotly visualization
+        if os.path.exists(f"{output_path}.html"):
+            try:
+                with open(f"{output_path}.html", 'r') as f:
+                    html_content = f.read()
+                
+                return {
+                    'success': True,
+                    'html': html_content,
+                    'output': result.stdout
+                }
+            except Exception as e:
+                print(f"Error reading HTML file: {str(e)}")
+        
+        # Otherwise, check for a static image
         if os.path.exists(output_path):
             with open(output_path, 'rb') as img_file:
                 img_data = base64.b64encode(img_file.read()).decode('utf-8')
@@ -264,13 +287,22 @@ except:
                 'format': 'image/png',
                 'output': result.stdout
             }
-        else:
-            return {'error': 'Failed to generate visualization'}
+        
+        # If we got here, no visualization was created
+        return {'error': 'Failed to generate visualization. Process output: ' + result.stdout + '\nError: ' + result.stderr}
+    
+    except Exception as e:
+        return {'error': f'Exception during visualization generation: {str(e)}'}
     
     finally:
-        # Clean up
+        # Clean up temporary files
         if os.path.exists(temp_file):
             os.remove(temp_file)
+        if os.path.exists(f"{output_path}.html"):
+            try:
+                os.remove(f"{output_path}.html")
+            except:
+                pass
 
 def execute_r_standard(code, output_path):
     """Execute standard R code for static visualizations"""

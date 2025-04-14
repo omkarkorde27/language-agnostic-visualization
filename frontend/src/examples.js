@@ -1,8 +1,8 @@
-// Python examples
+// Python examples with consistent indentation
 export const pythonExamples = [
-    {
-      name: 'Simple Bar Chart (Matplotlib)',
-      code: `
+  {
+    name: 'Simple Bar Chart (Matplotlib)',
+    code: `
 # Example 1: Simple Bar Chart (Matplotlib)
 import matplotlib.pyplot as plt
 import numpy as np
@@ -33,16 +33,17 @@ for i, v in enumerate(values):
 # Adjust layout
 plt.tight_layout()
 
+# NOTE: Do not remove the line below - it makes the plot visible
 fig.show()
-
-  `
-    },
-    {
-      name: 'Interactive Scatter Plot (Plotly)',
-      code: `
+`
+  },
+  {
+    name: 'Interactive Scatter Plot (Plotly)',
+    code: `
 # Example 2: Interactive Scatter Plot (Plotly)
 import plotly.express as px
 import numpy as np
+import pandas as pd
 
 # Generate random data
 np.random.seed(42)
@@ -69,8 +70,7 @@ fig = px.scatter(
     color_continuous_scale='viridis',
     opacity=0.8,
     title='Interactive Scatter Plot',
-    labels={'x': 'X Value', 'y': 'Y Value', 'color': 'Color Value'},
-    hover_data={'x_val', 'y_val'}
+    labels={'x_val': 'X Value', 'y_val': 'Y Value', 'color': 'Color Value'}
 )
 
 # Update layout
@@ -86,13 +86,15 @@ fig.update_layout(
 fig.update_traces(
     marker=dict(line=dict(width=1, color='DarkSlateGrey')),
     selector=dict(mode='markers')
-)  
-fig.show()
-  `
-    },
-    {
-      name: '3D Surface Plot (Plotly)',
-      code: `
+)
+
+# The backend will automatically use this variable
+# Do not call fig.show() - it will be handled automatically
+`
+  },
+  {
+    name: '3D Surface Plot (Plotly)',
+    code: `
 # Example 3: 3D Surface Plot (Plotly)
 import plotly.graph_objects as go
 import numpy as np
@@ -106,31 +108,27 @@ x_grid, y_grid = np.meshgrid(x, y)
 z_grid = np.sin(np.sqrt(x_grid**2 + y_grid**2))
 
 # Create figure
-fig = go.Figure(data=[go.Surface(x=x_grid, y=y_grid, z=z_grid)])
+fig = go.Figure(data=[go.Surface(z=z_grid, x=x, y=y)])
 
 # Update layout
 fig.update_layout(
     title='3D Surface Plot',
-    autosize=False,
     width=800,
     height=600,
     scene=dict(
         xaxis_title='X Axis',
         yaxis_title='Y Axis',
-        zaxis_title='Z Axis',
-        aspectratio=dict(x=1, y=1, z=0.7),
-        camera=dict(
-            eye=dict(x=1.2, y=1.2, z=1.2)
-        )
+        zaxis_title='Z Axis'
     )
-)  
+)
 
-fig.show()
-  `
-    },
-    {
-      name: 'Line Chart with Multiple Series (Matplotlib)',
-      code: `
+# The backend will automatically use this variable
+# Do not call fig.show() - it will be handled automatically
+`
+  },
+  {
+    name: 'Line Chart with Multiple Series (Matplotlib)',
+    code: `
 # Example 4: Line Chart with Multiple Series (Matplotlib)
 import matplotlib.pyplot as plt
 import numpy as np
@@ -162,10 +160,12 @@ ax.legend()
 
 # Adjust layout
 plt.tight_layout()  
+
+# NOTE: Do not remove the line below - it makes the plot visible
 plt.show()
-  `
-    }
-  ];
+`
+  }
+];
   
   // R examples
   export const rExamples = [
@@ -309,5 +309,5 @@ p <- ggplot(data, aes(x = group, y = value, fill = group)) +
 # Print the plot
 print(p)    
   `
-    }
-  ];
+  }
+];
