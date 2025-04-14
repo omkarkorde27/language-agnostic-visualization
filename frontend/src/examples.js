@@ -207,7 +207,6 @@ print(p)
 # Load required libraries
 library(plotly)
 
-# Create sample data
 set.seed(42)
 n <- 100
 x <- rnorm(n)
@@ -215,7 +214,6 @@ y <- x + rnorm(n)
 size <- runif(n, 5, 15)
 color <- runif(n)
 
-# Create a data frame
 data <- data.frame(x = x, y = y, size = size, color = color)
 
 # Create a plotly scatter plot
