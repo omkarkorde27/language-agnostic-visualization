@@ -132,6 +132,36 @@ The application provides detailed error messages when:
 - The visualization fails to generate
 - The backend server is unreachable
 
+## Issues Encountered and Resolution Steps
+
+During the development of this application, several challenges were encountered:
+
+1. **Cross-Origin Resource Sharing (CORS)**
+   - **Issue**: Frontend couldn't communicate with the backend due to CORS restrictions
+   - **Resolution**: Implemented CORS handling in Flask using `flask-cors` package
+
+2. **Interactive Visualization Rendering**
+   - **Issue**: Interactive Plotly/3D visualizations weren't properly displaying in iframes
+   - **Resolution**: Implemented HTML content sanitization and used sandbox attributes for iframes
+
+3. **R Integration Complexity**
+   - **Issue**: Executing R code and capturing graphical output was challenging
+   - **Resolution**: Created specialized handlers for different types of R visualizations (standard, plotly, 3D)
+
+4. **Large File Handling**
+   - **Issue**: Generation of large visualizations caused timeout issues
+   - **Resolution**: Implemented asynchronous processing and increased timeout limits
+
+5. **Browser Compatibility**
+   - **Issue**: Some visualizations rendered differently across browsers
+   - **Resolution**: Standardized HTML/CSS output and tested across multiple browsers
+
+6. **Error Propagation**
+   - **Issue**: Error messages from the visualization libraries weren't properly captured
+   - **Resolution**: Enhanced error handling with try/catch blocks and detailed error reporting
+
+Each issue required careful debugging and testing to ensure the application worked seamlessly across different environments and use cases.
+
 ## License
 
 [MIT License]
