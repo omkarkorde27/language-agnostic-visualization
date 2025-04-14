@@ -2,6 +2,42 @@ import React from 'react';
 import './Visualization.css';
 
 const Visualization = ({ result }) => {
+  // If there's an error
+  if (result.error) {
+    return (
+      <div className="visualization-container">
+        <h3>Error</h3>
+        <div className="error-message">
+          <pre>{result.error}</pre>
+          {result.details && <pre>{result.details}</pre>}
+        </div>
+      </div>
+    );
+  }
+  
+  // If the result contains an HTML (for interactive visualizations)
+  if (result.html) {
+    return (
+      <div className="visualization-container">
+        <h3>Interactive Visualization</h3>
+        <iframe
+          srcDoc={result.html}
+          title="Interactive Visualization"
+          className="visualization-iframe"
+          sandbox="allow-scripts allow-same-origin"
+          frameBorder="0"
+        />
+        
+        {result.output && (
+          <div className="output-log">
+            <h4>Output Log:</h4>
+            <pre>{result.output}</pre>
+          </div>
+        )}
+      </div>
+    );
+  }
+  
   // If the result contains an image
   if (result.image) {
     return (
@@ -19,21 +55,6 @@ const Visualization = ({ result }) => {
             <pre>{result.output}</pre>
           </div>
         )}
-      </div>
-    );
-  }
-  
-  // If there's something else (like HTML for interactive viz)
-  if (result.html) {
-    return (
-      <div className="visualization-container">
-        <h3>Visualization Result</h3>
-        <iframe
-          srcDoc={result.html}
-          title="Interactive Visualization"
-          className="visualization-iframe"
-          sandbox="allow-scripts"
-        />
       </div>
     );
   }

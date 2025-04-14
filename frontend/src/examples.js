@@ -203,8 +203,9 @@ print(p)
     {
       name: 'Interactive Scatter Plot (plotly)',
       code: `
-# Alternative to Interactive Scatter Plot without plotly
-library(ggplot2)
+# Example 2: Interactive Scatter Plot (plotly)
+# Load required libraries
+library(plotly)
 
 # Create sample data
 set.seed(42)
@@ -217,54 +218,59 @@ color <- runif(n)
 # Create a data frame
 data <- data.frame(x = x, y = y, size = size, color = color)
 
-# Create a ggplot scatter plot
-p <- ggplot(data, aes(x = x, y = y, size = size, color = color)) +
-  geom_point(alpha = 0.8) +
-  scale_size(range = c(2, 6)) +
-  scale_color_viridis_c(name = "Color Scale") +
-  labs(
-    title = "Scatter Plot (ggplot2)",
-    x = "X Value",
-    y = "Y Value"
-  ) +
-  theme_minimal() +
-  theme(
-    plot.title = element_text(hjust = 0.5, size = 16),
-    axis.title = element_text(size = 12)
-  )
+# Create a plotly scatter plot
+p <- plot_ly(data,
+          x = ~x,
+          y = ~y,
+          size = ~size,
+          color = ~color,
+          type = "scatter",
+          mode = "markers",
+          marker = list(
+            opacity = 0.8,
+            line = list(width = 1, color = "darkslategrey")
+          ),
+          hoverinfo = "text",
+          text = ~paste("X:", round(x, 2), "<br>Y:", round(y, 2))
+        ) %>%
+        layout(
+          title = "Interactive Scatter Plot",
+          xaxis = list(title = "X Value"),
+          yaxis = list(title = "Y Value"),
+          coloraxis = list(colorbar = list(title = "Color Scale"))
+        )
 
-print(p)
+# Print the plot
+p
+
   `
     },
     {
       name: '3D Plot (rgl)',
       code: `
-# Alternative to 3D Plot without rgl
-library(ggplot2)
+# Example 3: 3D Plot (rgl)
+# Load libraries
+library(rgl)
 
-# Generate data for a 2D heatmap representing 3D surface
+# Generate data for a 3D surface
 x <- seq(-5, 5, length = 50)
 y <- seq(-5, 5, length = 50)
-grid <- expand.grid(x = x, y = y)
-grid$z <- with(grid, sin(sqrt(x^2 + y^2)))
+z <- outer(x, y, function(x, y) sin(sqrt(x^2 + y^2)))
 
-# Create a heatmap
-p <- ggplot(grid, aes(x = x, y = y, fill = z)) +
-  geom_tile() +
-  scale_fill_viridis_c(name = "z = sin(sqrt(x² + y²))") +
-  labs(
-    title = "2D Representation of 3D Surface",
-    x = "X Axis",
-    y = "Y Axis"
-  ) +
-  theme_minimal() +
-  theme(
-    plot.title = element_text(hjust = 0.5, size = 16),
-    axis.title = element_text(size = 12)
-  ) +
-  coord_fixed()
+# Create colors based on z values
+col <- heat.colors(length(z))
 
-print(p)   
+# Create a 3D surface
+persp3d(x, y, z, col = col,
+       xlab = "X Axis", ylab = "Y Axis", zlab = "Z Axis",
+       main = "3D Surface Plot")
+
+# Add some points
+points3d(x = runif(50, -5, 5),
+         y = runif(50, -5, 5),
+         z = runif(50, -1, 1),
+         col = "blue", size = 4)
+
   `
     },
     {
@@ -301,7 +307,7 @@ p <- ggplot(data, aes(x = group, y = value, fill = group)) +
   )
 
 # Print the plot
-print(p)      
+print(p)    
   `
     }
   ];
