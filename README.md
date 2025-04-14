@@ -1,151 +1,141 @@
 # Language Agnostic Visualization Web Application
 
-A web application that allows users to generate and view simple visualizations by submitting custom scripts written in Python or R. The app executes these scripts on the backend and renders the resulting visualizations in the frontend.
+A web application that allows users to create data visualizations using Python or R code, directly in the browser.
 
 ## Overview
 
-This project consists of two main components:
+This application consists of a React frontend and a Flask backend. It enables users to:
 
-1. **Frontend (React)**
-   - Provides an interface to select scripting language (Python or R)
-   - Includes a text area to input code that generates charts
-   - Offers a set of example visualizations in both Python and R
-   - Displays the resulting visualization
+* Write code in Python or R
+* Generate static and interactive visualizations
+* Choose from pre-defined examples or write custom code
+* View visualizations directly in the browser
 
-2. **Backend (Flask)**
-   - Accepts code and language selection via an API endpoint
-   - Dynamically executes scripts in secure isolated environments
-   - Generates visualizations
-   - Returns visualization data to be embedded in the frontend
+## Features
 
-## Supported Visualization Libraries
-
-### Python
-- **Matplotlib** - Static visualizations
-- **Plotly** - Interactive and 3D visualizations
-
-### R
-- **ggplot2** - Static visualizations
-- **plotly** - Interactive visualizations
-- **rgl** - 3D visualizations
+* **Multi-language Support**: Generate visualizations using either Python or R code
+* **Interactive Visualizations**: Create both static and interactive plots
+* **Pre-built Examples**: Choose from various visualization examples for quick starts
+* **Real-time Rendering**: View visualization outputs directly in the browser
+* **Error Handling**: Detailed error reporting for debugging code
 
 ## Project Structure
 
 ```
-.
+/
 ├── backend/
-│   ├── app.py                # Flask application
-│   ├── Dockerfile            # Docker configuration for backend
-│   └── requirements.txt      # Python dependencies
-├── frontend/
-│   ├── src/
-│   │   ├── App.js            # Main React component
-│   │   ├── App.css           # Styles for App component
-│   │   ├── components/       # React components
-│   │   │   ├── CodeEditor.js     # Code input component
-│   │   │   ├── CodeEditor.css    # Styles for code editor
-│   │   │   ├── Visualization.js  # Visualization display component
-│   │   │   └── Visualization.css # Styles for visualization
-│   │   ├── examples.js       # Example code for Python and R
-│   │   ├── index.js          # React entry point
-│   │   └── index.css         # Global styles
-│   ├── package.json          # Node.js dependencies
-│   └── Dockerfile            # Docker configuration for frontend
-└── docker-compose.yml        # Docker Compose configuration
+│   ├── app.py                   # Flask application with visualization API
+│   ├── requirements.txt         # Python dependencies
+│   └── temp/                    # Directory for temporary visualization files
+│
+└── frontend/
+    ├── public/                  # Public assets
+    └── src/
+        ├── components/          # React components
+        │   ├── CodeEditor.js    # Code editor component
+        │   └── Visualization.js # Visualization display component
+        ├── App.js               # Main application component
+        ├── examples.js          # Pre-defined code examples
+        └── api/                 # API client
 ```
 
-## Getting Started
+## Technologies Used
+
+### Backend
+- **Flask**: Python web framework
+- **NumPy**: Numerical computing library
+- **Pandas**: Data manipulation and analysis
+- **Matplotlib**: Static visualization library
+- **Plotly**: Interactive visualization library
+
+### Frontend
+- **React**: Frontend framework
+- **Axios**: HTTP client (defined in API but using fetch in App.js)
+- **CSS**: Styling
+
+## Setup and Installation
 
 ### Prerequisites
+- Node.js and npm
+- Python 3.6+
+- R (optional, for R visualizations)
 
-- Docker and Docker Compose
-- Node.js and npm (if running the frontend outside Docker)
-- Python 3.9+ (if running the backend outside Docker)
-- R (if running the backend outside Docker)
-
-### Running with Docker Compose
-
-1. Clone the repository:
-   ```
-   git clone https://github.com/yourusername/language-agnostic-visualization.git
-   cd language-agnostic-visualization
-   ```
-
-2. Start the application with Docker Compose:
-   ```
-   docker-compose up
-   ```
-
-3. Access the application at http://localhost:3000
-
-### Running without Docker
-
-#### Backend
+### Backend Setup
 
 1. Navigate to the backend directory:
-   ```
-   cd backend
-   ```
+```bash
+cd backend
+```
 
-2. Install required Python packages:
-   ```
-   pip install -r requirements.txt
-   ```
+2. Create a virtual environment (recommended):
+```bash
+python -m venv venv
+source venv/bin/activate  # On Windows: venv\Scripts\activate
+```
 
-3. Start the Flask server:
-   ```
-   python app.py
-   ```
+3. Install dependencies:
+```bash
+pip install -r requirements.txt
+```
 
-#### Frontend
+4. Start the Flask server:
+```bash
+python app.py
+```
+
+The backend will run on http://localhost:5001 by default.
+
+### Frontend Setup
 
 1. Navigate to the frontend directory:
-   ```
-   cd frontend
-   ```
+```bash
+cd frontend
+```
 
-2. Install Node.js dependencies:
-   ```
-   npm install
-   ```
+2. Install dependencies:
+```bash
+npm install
+```
 
-3. Start the React development server:
-   ```
-   npm start
-   ```
+3. Start the development server:
+```bash
+npm start
+```
 
-4. Access the application at http://localhost:3000
+The frontend will run on http://localhost:3000 and proxy API requests to the backend.
 
-## Implementation Details and Challenges
+## Usage
 
-### Security Considerations
+1. Select the language (Python or R) from the dropdown
+2. Choose a pre-built example or write your own code
+3. Click "Generate Visualization" to create the visualization
+4. View the output in the visualization panel
 
-The application executes user-provided code, which presents security challenges. The following measures have been implemented:
+## Supported Visualization Types
 
-- Code execution in isolated environments
-- Timeout limits to prevent infinite loops
-- Resource limitations to prevent excessive resource usage
+### Python
+- Matplotlib static visualizations
+- Plotly interactive visualizations
+- 3D surface plots
+- Line charts, scatter plots, bar charts, etc.
 
-### Cross-Language Support
+### R
+- ggplot2 static visualizations
+- plotly interactive visualizations
+- 3D visualizations using rgl
+- Boxplots, bar charts, scatter plots, etc.
 
-Supporting both Python and R required:
+## Error Handling
 
-- Designing a unified API for both languages
-- Managing different environment dependencies
-- Standardizing visualization output formats
+The application provides detailed error messages when:
+- The code contains syntax errors
+- The visualization fails to generate
+- The backend server is unreachable
 
-### Visualization Rendering
+## License
 
-Different visualization libraries produce different output formats. The application handles:
+[MIT License]
 
-- Static images (PNG) for simple visualizations
-- Interactive HTML/JavaScript for Plotly visualizations
-- Conversion of 3D visualizations to static images (for libraries like rgl)
+## Credits
 
-## Future Improvements
-
-- Add more supported visualization libraries
-- Implement user authentication and saved visualizations
-- Add dataset upload functionality
-- Improve error handling and debugging tools
-- Add option to export visualizations in different formats
+Developed as a cross-language data visualization platform.
