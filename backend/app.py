@@ -14,6 +14,11 @@ CORS(app)  # Enable CORS for all routes
 TEMP_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'temp')
 os.makedirs(TEMP_DIR, exist_ok=True)
 
+@app.route('/')
+def health_check():
+    """Simple health check endpoint"""
+    return jsonify({'status': 'ok', 'message': 'Visualization API is running'})
+
 @app.route('/api/visualize', methods=['POST'])
 def visualize():
     data = request.json
@@ -187,4 +192,7 @@ tryCatch({{
             os.remove(temp_file)
 
 if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0', port=5000)
+    # Use port 5001 if requested
+    port = int(os.environ.get('PORT', 5001))
+    print(f"Starting Flask server on port {port}...")
+    app.run(debug=True, host='0.0.0.0', port=port)

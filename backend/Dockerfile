@@ -1,6 +1,6 @@
-FROM python:3.9-alpine
+FROM python:3.9-slim
 
-# Install R
+# Install R and required packages
 RUN apt-get update && apt-get install -y \
     r-base \
     r-base-dev \
@@ -23,7 +23,7 @@ COPY . .
 RUN mkdir -p temp
 
 # Expose port
-EXPOSE 5000
+EXPOSE 8000
 
 # Run the application
 CMD ["python", "app.py"]

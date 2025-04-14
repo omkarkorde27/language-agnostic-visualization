@@ -61,7 +61,7 @@ function App() {
     setResult(null);
     
     try {
-      const response = await fetch('http://localhost:5000/api/visualize', {
+      const response = await fetch('http://localhost:5001/api/visualize', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
