@@ -1,5 +1,3 @@
-// This is a file you can create in frontend/src/api/visualization.js
-
 import axios from 'axios';
 
 // Create an axios instance with correct baseURL

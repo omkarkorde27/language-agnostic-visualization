@@ -1,4 +1,4 @@
-// Python examples with consistent indentation
+// Python examples
 export const pythonExamples = [
   {
     name: 'Simple Bar Chart (Matplotlib)',
@@ -45,7 +45,6 @@ import plotly.express as px
 import numpy as np
 import pandas as pd
 
-# Generate random data
 np.random.seed(42)
 n = 100
 x = np.random.normal(0, 1, n)
@@ -60,7 +59,7 @@ df = pd.DataFrame({
     'color': colors
 })
 
-# Create a scatter plot with Plotly Express
+# Create a scatter plot
 fig = px.scatter(
     df,
     x='x_val', 
@@ -99,7 +98,6 @@ fig.update_traces(
 import plotly.graph_objects as go
 import numpy as np
 
-# Create data
 x = np.linspace(-5, 5, 50)
 y = np.linspace(-5, 5, 50)
 x_grid, y_grid = np.meshgrid(x, y)
@@ -122,8 +120,6 @@ fig.update_layout(
     )
 )
 
-# The backend will automatically use this variable
-# Do not call fig.show() - it will be handled automatically
 `
   },
   {
@@ -133,7 +129,6 @@ fig.update_layout(
 import matplotlib.pyplot as plt
 import numpy as np
 
-# Generate data
 x = np.linspace(0, 10, 100)
 y1 = np.sin(x)
 y2 = np.cos(x)
@@ -161,8 +156,6 @@ ax.legend()
 # Adjust layout
 plt.tight_layout()  
 
-# NOTE: Do not remove the line below - it makes the plot visible
-plt.show()
 `
   }
 ];
@@ -196,7 +189,6 @@ p <- ggplot(data, aes(x = category, y = value, fill = category)) +
     legend.position = "none"
   )
 
-# Print the plot
 print(p)  
       `
     },
@@ -238,7 +230,6 @@ p <- plot_ly(data,
           coloraxis = list(colorbar = list(title = "Color Scale"))
         )
 
-# Print the plot
 p
 
   `
@@ -247,7 +238,6 @@ p
       name: '3D Plot (rgl)',
       code: `
 # Example 3: 3D Plot (rgl)
-# Load libraries
 library(rgl)
 
 # Generate data for a 3D surface
@@ -275,7 +265,6 @@ points3d(x = runif(50, -5, 5),
       name: 'Boxplot (ggplot2)',
       code: `
 # Example 4: Boxplot (ggplot2)
-# Create sample data
 set.seed(123)
 data <- data.frame(
   group = rep(c("A", "B", "C", "D"), each = 30),
@@ -303,8 +292,6 @@ p <- ggplot(data, aes(x = group, y = value, fill = group)) +
     axis.title = element_text(size = 12),
     legend.position = "none"
   )
-
-# Print the plot
 print(p)    
   `
   }

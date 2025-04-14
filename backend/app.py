@@ -196,12 +196,7 @@ def create_3d_html(data, title="3D Surface Plot"):
     """
     return html
 
-# Modify the Python execution function in backend/app.py
-
-# Replace the execute_python function in backend/app.py with this simpler version
-
 def execute_python(code, output_path):
-    # Indent each line of the user's code to fit inside the try block
     indented_code = '\n'.join('    ' + line for line in code.splitlines())
     
     # Create a temporary Python file
@@ -369,8 +364,8 @@ def execute_r_plotly(code, output_path):
     x_values_match = re.search(r'x\s*[=<-]\s*c\(([^)]+)\)', code)
     y_values_match = re.search(r'y\s*[=<-]\s*c\(([^)]+)\)', code)
     
-    x_values = [1, 2, 3, 4, 5]  # Default values
-    y_values = [5, 4, 3, 2, 1]  # Default values
+    x_values = [1, 2, 3, 4, 5]  
+    y_values = [5, 4, 3, 2, 1] 
     
     if x_values_match:
         try:
@@ -562,7 +557,6 @@ def execute_r_3d(code, output_path):
     }
 
 if __name__ == '__main__':
-    # Use port from environment or default to 5001
     port = int(os.environ.get('PORT', 5001))
     print(f"Starting Flask server on port {port}...")
     app.run(debug=True, host='0.0.0.0', port=port)
