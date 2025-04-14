@@ -3,10 +3,14 @@ services:
     build: ./backend
     container_name: viz-backend
     ports:
-      - "5000:5000"
+      - "5000:5001"
     volumes:
       - ./backend:/app
+      - backend_temp:/app/temp
     restart: always
+    environment:
+      - PORT=5001
+    user: "root"  # Ensure we have write permissions
 
   frontend:
     build: ./frontend
@@ -21,3 +25,6 @@ services:
     environment:
       - REACT_APP_API_URL=http://localhost:5000
     restart: always
+
+volumes:
+  backend_temp:
